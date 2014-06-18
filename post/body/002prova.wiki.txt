@@ -1,0 +1,5 @@
+Testo del post.
+
+I metadati sono '''già stati scritti''', ma la casella di testo era vuota, e quindi il testo non è stato scritto...
+
+Vediamo '''cosa succede'''.

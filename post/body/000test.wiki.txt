@@ -1,0 +1,5 @@
+Questo è un post di test, formattato con la sintassi '''wiki'''.
+
+Questo è un ''nuovo paragrafo''.
+
+Questo è un link a [http://www.google.it/ Google].

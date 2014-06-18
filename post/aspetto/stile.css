@@ -1,0 +1,97 @@
+@font-face {
+    font-family: maven;
+    src: url(maven.woff);
+}
+
+body {
+	background:#f1efdb;
+	margin:0;
+	
+	font-family: maven;
+	color:#3a3934;
+}
+
+#tag {
+	background: url('tag.png');
+	background-repeat: no-repeat;
+	background-size: 250px auto;
+	position: absolute;
+	margin-left: 50px;
+	width: 250px;
+	height: 366px;
+	top: 0;
+	padding-top: 50px;
+}
+
+#logo {
+	width: 200px;
+	margin-left: 25px;
+	margin-bottom: 30px;
+}
+
+#data {
+	color: white;
+	text-align: center;
+	font-size: 2em;
+}
+
+#titolo {
+	padding-left: 320px;
+	height:100px;
+}
+
+#titolo h2 {
+	line-height: 100px;
+	margin: 0;
+	padding: 0;
+	font-size:36px;
+}
+
+#map-container {
+	padding: 10px 0;
+	background: url('stripes.png');
+	background-size: 50px;
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+	-moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+}
+
+#map {
+	height:400px;
+}
+
+#content {
+	font-size: 20px;
+	padding:1em;
+	min-height:300px;
+}
+
+#footer {
+	background: url('footer.png');
+	height: 170px;
+	padding-top: 130px;
+	color: white;
+
+	text-align: center;
+	font-size: .8em;
+}
+
+#footer a{
+	color:#f1efdb;
+}
+
+#footerMenu {
+	line-height: 60px;
+	font-size: 22px;
+	font-family: maven;
+	padding-left: 1em;
+	margin-bottom: 30px;
+}
+
+#footerGithub {
+	right: 0;
+	font-size: 16px;
+	font-family: maven;
+	padding-right: 1em;
+	margin-bottom: 1em;
+}

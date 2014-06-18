@@ -1,0 +1,234 @@
+<html>
+
+
+<head>
+
+ <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+
+ <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+ <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+ 
+ <link rel="stylesheet" type="text/css" href="stile.css">
+</head>
+
+<body>
+	
+<div id="map" style="width:100%;height:100%"> </div>
+<script>
+var map = L.map('map', {attributionControl: false}).setView([47.314071591859516, 5.2899118606695765], 5);
+
+// Original OSM
+//~ var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+//~ var osmAttrib='Map data © openstreetmap contributors';
+//~ var tl = new L.TileLayer(osmUrl,{minZoom:8,maxZoom:18,attribution:osmAttrib});
+
+// Mapbox (not sure if free to use...)
+//~ L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+			//~ maxZoom: 18,
+			//~ attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				//~ '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				//~ 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			//~ id: 'examples.map-i86knfo3'
+		//~ }).addTo(map);
+
+// Germans
+//~ var tl = L.tileLayer('http://openmapsurfer.uni-hd.de/tiles/roads/x={x}&y={y}&z={z}', {
+	//~ attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+//~ });
+
+// Mapquest
+var tl = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg', {
+	attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+	subdomains: '1234'
+});
+
+L.control.attribution({position: 'topright'}).addTo(map);
+
+tl.addTo(map);
+
+</script>
+
+
+
+<!-- (IT) Carica le foto dall'album Picasa -->
+<!-- (EN) Load pictures from Picasa album -->
+<script>
+var marker;
+$.get('picasa/getrss.php?albumid=6022687094812516161', function (data) {
+    $(data).find("item").each(function () { // or "item" or whatever suits your feed
+        var el = $(this);
+        
+        // Only if picture has no geo data
+		if ( el.find("gml\\:pos").length != 0 ) {
+			// Album data from feed
+			var imageurl    = el.find("enclosure").attr('url');
+			var markerurl   = imageurl.replace(/([^\/]+$)/g, "s40/TEST$1");
+			var markerlink  = imageurl.replace(/([^\/]+$)/g, "s0/TEST$1");
+			var polaroidurl = "polaroid/polaroid.php?key=2394872&url="+markerurl;
+			var latLng      = el.find("gml\\:pos").text().split(" ");
+
+			// The Marker
+			var icon = L.icon({
+				iconUrl: polaroidurl,
+				iconAnchor:  [20, 20] // TODO: this is not the exact center (default would be top-left corner)
+			});
+			var marker = L.marker([latLng[0],latLng[1]], {icon: icon}).addTo(map);
+			
+			// The Infobox
+			var divNode = document.createElement('DIV');
+			divNode.innerHTML = '<a href="'+markerlink+'" target="_blank"><img src="'+imageurl+'" border="0"></a>';
+			marker.bindPopup(divNode, {
+				maxWidth:600,
+				minWidth:100 });
+		}
+
+    });
+    
+    $("#loadingText").text("Fatto!"); $("#loading").fadeOut(2000);
+});
+</script>
+
+
+
+<!-- (IT) Carica i post del blog -->
+<!-- (EN) Load blog posts -->
+<script>
+$.get('post/list.php', function(data) {
+	var META_TITOLO      = 0;
+	var META_SOMMARIO    = 1;
+	var META_DATA        = 2;
+	var META_LATITUDINE  = 3;
+	var META_LONGITUDINE = 4;
+	var META_PICASAID    = 5;
+	var META_STATO       = 6;	// 0: non pubblicato, 1: pubblicato
+	var META_ID          = 7;
+	data.trim().split("\n\n\n").forEach( function(post) {
+		post = post.split("\n");
+		
+		var markerPost = L.marker([post[META_LATITUDINE],post[META_LONGITUDINE]]).addTo(map);
+		markerPost.bindPopup("<b>"+post[META_TITOLO]+"</b><br><i>"+post[META_SOMMARIO]+"</i><br><a href='post/view.php?id="+post[META_ID]+"'>Continua a leggere...</a>");
+	});
+});
+</script>
+
+
+
+<!-- (IT) Carica la cronologia posizioni -->
+<!-- (EN) Load position history -->
+<script>
+$.get('position/cronologia.txt', function(data) {
+	var POS_LAT  = 0;
+	var POS_LONG = 1;
+	var POS_DATA = 2;
+	
+	var punti = [];
+	var markers = [];
+	data.trim().split("\n\n\n").forEach( function(pos) {
+		pos = pos.split("\n");
+
+		punti.push( new L.LatLng(pos[POS_LAT], pos[POS_LONG]) );
+		
+		var markerStep = L.circleMarker([pos[POS_LAT], pos[POS_LONG]], {
+			color: 'red',
+			fillColor: '#f03',
+			fillOpacity: 0.5
+		}).setRadius(5);
+		markerStep.bindPopup("Sono stato qui il "+pos[POS_DATA]);
+		markers.push(markerStep);	// Will add to map after the line, otherwise 
+									// line would cover points making more difficult
+									// to click to open the popup
+	});
+	
+	var percorso = new L.Polyline(punti, {
+		color: 'red',
+		weight: 3,
+		opacity: 0.5,
+		smoothFactor: 5
+	}).addTo(map);
+
+	markers.forEach( function(m) {
+		m.addTo(map);
+	});
+
+});
+</script>
+
+
+
+<!-- (IT) Marker per l'ultima posizione -->
+<!-- (EN) Last position marker -->
+<script>
+$.get('position/last.txt', function(data) { 
+	
+	data = data.split('\n');
+	var lat  = data[0];
+	var lng  = data[1];
+	var date = data[2];
+	
+	//Extend the Default marker class
+	var RedIcon = L.Icon.Default.extend({
+		options: {
+			iconUrl: 'marker-icon-red.png' 
+		}
+	});
+	var redIcon = new RedIcon();
+	
+	var markerLastPos = L.marker([lat, lng], {icon: redIcon}).addTo(map);
+	
+	markerLastPos.bindPopup("<b>Sono qui!</b><br><i>"+date+"</i>");
+	
+    //~ markerLastPos.on('mouseover', function (e) {
+		//~ this.openPopup();
+	//~ });
+	//~ markerLastPos.on('mouseout', function (e) {
+		//~ this.closePopup();
+	//~ });
+	
+	map.setView([lat,lng],6);
+
+
+});
+
+</script>
+
+
+<div id="tag" style="z-index:2;">
+	
+		<div style="position:absolute; top:0; color:white; font-size: 14px; width:250px; text-align:center;" id="loading">
+			<div id="loadingText">Sto caricando le foto...</div>
+			<img src="ajax-loader.gif" style="vertical-align: middle;">
+		</div>
+	
+		<a href="index.html"><img src="post/aspetto/logo.png" id="logo"></a>
+		<p id="titolo">Hello,<br>World!</p>
+</div>
+
+
+<div id="footer">
+  
+  <div id="footerMenu" style="
+    position: absolute;
+    bottom: 0;
+    line-height: 60px;
+    font-size: 22px;
+    font-family: maven;
+    padding-left: 1em;
+">
+	<a href="#">About</a> - <a href="#">Tutti i post</a> - <a href="#">Foto di altri viaggi</a></div>
+
+<div id="footerGithub" style="
+    position: absolute;
+    bottom: 0;
+    right:0;
+    /* line-height: 60px; */
+    font-size: 16px;
+    font-family: maven;
+    padding-right: 1em;
+    margin-bottom: 1em;
+"><img src="github-icon.png" style="
+    height: 40px;"><br>All of this is Open Source: get the code on GitHub!</div>
+</div>
+
+</body>
+
+</html>
