@@ -58,7 +58,7 @@ $meta = split("\n",$meta);
 	<head>
 	<meta charset="utf-8">
 		
-	<title><?php echo htmlentities($meta[$META_TITOLO]) . ' - ' . $conf['site.title']; ?></title>
+	<title><?php echo $meta[$META_TITOLO] . ' - ' . $conf['site.title']; ?></title>
 	
 	<link rel="stylesheet" type="text/css" href="aspetto/stile.css">
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
@@ -86,7 +86,7 @@ $meta = split("\n",$meta);
 	</div>
 
 	<div id="titolo">
-	<h2><?php echo htmlentities($meta[$META_TITOLO]); ?></h2>
+	<h2><?php echo $meta[$META_TITOLO]; ?></h2>
 	</div>
 	
 	<div id="map-container" style="z-index:1;">
@@ -95,11 +95,62 @@ $meta = split("\n",$meta);
 	
 		
 	<div id=content>
-	<?php echo htmlentities($body); ?>
-	
-	
+	<?php echo $body; ?>
 	</div>
 	
+	
+<?php
+	if ($conf['adsense.enabled']) {
+		
+?>
+	<!-- AdSense -->
+	<div style="text-align:center;">
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<!-- helloworld -->
+		<ins class="adsbygoogle"
+			 style="display:inline-block;width:728px;height:90px"
+			 data-ad-client="ca-pub-9057555078598955"
+			 data-ad-slot="9313787485"></ins>
+		<script>
+		(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+	</div>
+<?php
+	
+	}
+?>	
+
+
+
+<?php
+	if ($conf['livefyre.enabled']) {
+		
+?>
+	<!-- START: Livefyre Embed -->
+	<div id="livefyre-comments" style="padding:1em; margin-bottom:50px;"></div>
+	<script type="text/javascript" src="http://zor.livefyre.com/wjs/v3.0/javascripts/livefyre.js"></script>
+	<script type="text/javascript">
+	(function () {
+		var articleId = "<?php echo $id; ?>";
+		fyre.conv.load({}, [{
+			el: 'livefyre-comments',
+			network: "livefyre.com",
+			siteId: "<?php echo $conf['livefyre.siteid']; ?>",
+			articleId: articleId,
+			signed: false,
+			collectionMeta: {
+				articleId: articleId,
+				url: fyre.conv.load.makeCollectionUrl(),
+			}
+		}], function() {});
+	}());
+	</script>
+	<!-- END: Livefyre Embed -->
+<?php
+	
+	}
+?>	
+
 	<!-- Parse the wiki markup -->
 	<script>
 		var wikiContents = document.getElementById('content');
@@ -163,11 +214,13 @@ $meta = split("\n",$meta);
   <img src="../ajax-loader.gif"> <div id="loadingText">Fatto!</div></div>
   
   <div id="footerMenu">
-	<a href="../index.html">Pagina Principale</a> - <a href="../about.html">About</a> - <a href="#">Tutti i post</a> - <a href="../altriviaggi.html">Foto di altri viaggi</a>
+	<a href="../index.html">Pagina Principale</a> - <a href="../about.html">About</a> - <a href="../postlist.php">Tutti i post</a> - <a href="../altriviaggi.html">Foto di altri viaggi</a>
   </div>
 
 <div id="footerGithub">
-	<img src="../github-icon.png" style="height: 40px;"><br>All of this is Open Source: get the code on GitHub!</div>
+	<a href="https://github.com/dario-chiappetta/amerigo" target="_blank">
+		<img src="../github-icon.png" style="height: 40px;"><br>All of this is Open Source: get the code on GitHub!</div>
+	</a>
 </div>
 	
 	

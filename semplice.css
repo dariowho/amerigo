@@ -1,0 +1,89 @@
+@font-face {
+    font-family: maven;
+    src: url(post/aspetto/maven.woff);
+}
+
+body {
+	background:#f1efdb;
+	
+	font-family: maven;
+	color:#3a3934;
+	
+	padding-top: 230px;
+	margin:0;
+}
+
+#header {
+	background: url(post/aspetto/header.png);
+	height: 243px;
+
+	position: absolute;
+	top: -70px;
+	left: 0;
+	width: 100%;
+	padding: 80px 0 0 0;
+}
+
+#logo {
+	vertical-align: middle;
+	height: 140px;
+	margin: 0 50px;
+}
+
+#header h1 {
+	display: inline-block;
+	color: white;
+	margin: 0;
+	font-size: 50px;
+}
+
+#content {
+	min-height:500px;
+	padding:1em;
+	font-size:22px;
+}
+
+#content a {
+	color:#3a3934;
+}
+
+/* Copiati dallo stile dei post. Sarebbe più elegante riorganizzare... */
+
+#footer {
+	background: url('post/aspetto/footer.png');
+	height: 170px;
+	padding-top: 130px;
+	color: white;
+
+	text-align: center;
+	font-size: .8em;
+}
+
+#footer a{
+	color:#f1efdb;
+}
+
+#footerMenu {
+	line-height: 60px;
+	font-size: 22px;
+	font-family: maven;
+	padding-left: 1em;
+	margin-bottom: 30px;
+}
+
+#footerGithub {
+	right: 0;
+	font-size: 16px;
+	font-family: maven;
+	padding-right: 1em;
+	margin-bottom: 1em;
+}
+
+#footerGithub a {
+	opacity: 0.85;
+	text-decoration: none;
+}
+
+#footerGithub a:hover {
+	opacity: 1;
+}

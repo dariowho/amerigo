@@ -1,1 +1,77 @@
-About...
+
+<html>
+	<head>
+	<meta charset="utf-8">
+		
+	<title>About... - Hello, World!</title>
+	
+	<link rel="stylesheet" type="text/css" href="semplice.css">
+	
+	</head>
+	
+	<body>
+	<div id="header" style="z-index:2;">
+		
+		<a href="index.html"><img src="post/aspetto/logo.png" id="logo"></a>
+		<h1>About...</h1>
+
+	</div>
+	
+	<div id=content>
+	
+	<img src="Nokia-808.jpg" style="float:left; margin:1em; box-shadow: 0px 0px 5px #888888;">	
+	
+	<p>In breve: tra <strong>due settimane</strong> parto per il giro del mondo, con uno zaino, un telefono con GPS e fotocamera da 41 Megapixel, e una laurea in informatica.</p>
+	
+	<p>Questo sito, <em>Hello, World!</em>, è il modo più sensato di combinare tutte queste cose: un sistema di <strong>blog</strong> che, oltre ai normali post, mostra la mia posizione nel mondo, il tragitto che ho fatto fino ad ora, e le foto, mano a mano che le scatto.</p>
+	
+	<p>Buona navigazione!<br>Dario</p>
+	
+	<p style="clear:both;"> </p>
+	
+	<h2>Tecnicismi</h2>
+	<p>Pochi sanno che la maggior parte dei telefoni, quando si scatta una foto, salvano tra i dati Exif le <strong>coordinate GPS</strong> del luogo in cui la foto è stata scattata.</p>
+	<p>Il nucleo di questo sito consta essenzialmente di qualche script <strong>JavaScript</strong> che scarica le foto da un album Picasa, e le posiziona su di una cartina Open Street Map. In particolare:</p>
+	<ol>
+		<li><p>Con una richiesta asincrona, lo script scarica il feed RSS dell'album di foto su Picasa (è necessario un proxy a lato server, in questo caso PHP, perchè i browser generalmente bloccano richieste cross-domain!).<br>
+		<small>es. <em>https://picasaweb.google.com/data/feed/api/user/113846198819259548938/albumid/6018195150237936481</em></small></p></li>
+		
+		<li><p>Dal feed sono estratte, per ciascuna foto, le coordinate GPS dell'immagine, e le URL della foto in diverse dimensioni.<br>
+		<small>es. <em>https://lh3.googleusercontent.com/-uEvnNX5LT_g/U4Tsm9P73oI/AAAAAAAAAWI/YMTGeii3NBQ/<strong>s50</strong>/2013-12-10-0530.jpg</em></small><br>
+		<small>es. <em>https://lh3.googleusercontent.com/-uEvnNX5LT_g/U4Tsm9P73oI/AAAAAAAAAWI/YMTGeii3NBQ/<strong>s200</strong>/2013-12-10-0530.jpg</em></small><br>
+		<small>es. <em>https://lh3.googleusercontent.com/-uEvnNX5LT_g/U4Tsm9P73oI/AAAAAAAAAWI/YMTGeii3NBQ/<strong>s0</strong>/2013-12-10-0530.jpg</em></small></p></li>
+		
+		<li><p>La URL della miniatura più piccola è passata, con un'altra richiesta asincrona, ad uno script PHP che genera l'effetto "Polaroid" (bordo bianco, ombra e rotazione), e restituisce il risultato in formato PNG.</p></li>
+		
+		<li><p>La miniatura così creata viene associata ad un Marker LeafletJS e posizionata sulla mappa.</p></li>
+	</ol>
+	
+	<p>Il codice sorgente di questa piattaforma (nome in codice <strong>Amerigo</strong>) è scaricabile da <a href="https://github.com/dario-chiappetta/amerigo" target="_blank">GitHub</a>. Il codice, che all'inizio doveva essere solo una <em>sandbox</em> per sperimentare l'integrazione di Picasa e LeafletJS, è stato scritto in circa una settimana, e non è decisamente il tipo di codice che vorresti vedere in produzione, però fa il suo lavoro e può essere utile come spunto per altri progetti...</p>
+
+	<h2>Acknowledgements</h2>
+	<p>Non sarebbe stato possibile realizzare questo blog senza l'aiuto di questi brillanti <strong>progetti Open Source</strong>:</p>
+	<ul>
+		<li><a href="http://openstreetmap.org" target="_blank">Open Street Map</a> - Mappe di tutto il mondo libere e create grazie al contributo di milioni di utenti (skin: <a href="http://www.mapquest.com/" target="_blank">Mapquest</a>).</li>
+		<li><a href="http://leafletjs.com/" target="_blank">Leaflet JS</a> - Potente libreria Javascript per la gestione di mappe interattive.</li>
+		<li><a href="http://remysharp.com/2008/04/01/wiki-to-html-using-javascript/" target="_blank">Wiki to HTML using JavaScript</a> - Script di Remy Sharp per il parsing della sintassi Wiki usata per scrivere i post.</li>
+		<li>GNU/Linux, Lighttpd, PHP, Gimp, Inkscape, Firefox, etc...</li>
+	</ul>
+	<p>Tutte le foto sono memorizzate su (e servite da) <a href="http://picasaweb.google.com/" target="_blank">Google Picasa Web Albums</a>.</p>
+	</div>
+
+<div id="footer">
+  <div id="footerMenu">
+	<a href="index.html">Pagina Principale</a> - About - <a href="postlist.php">Tutti i post</a> - <a href="altriviaggi.html">Foto di altri viaggi</a>
+  </div>
+
+<div id="footerGithub">
+	<a href="https://github.com/dario-chiappetta/amerigo" target="_blank">
+		<img src="github-icon.png" style="height: 40px;"><br>All of this is Open Source: get the code on GitHub!
+	</a>
+</div>
+	
+	
+	</body>
+</html>
+
+

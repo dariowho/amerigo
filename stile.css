@@ -53,7 +53,10 @@ body {
 }
 
 #footer a{
+/*
 	color:#f1efdb;
+*/
+	color:white;
 }
 
 #footer p {
@@ -61,4 +64,32 @@ body {
 	text-align: left;
 	margin-left: 1em;
 	font-family:maven;
+}
+
+#footerMenu {
+	position: absolute;
+	bottom: 0;
+	line-height: 60px;
+	font-size: 22px;
+	font-family: maven;
+	padding-left: 1em;
+}
+
+#footerGithub {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	font-size: 16px;
+	font-family: maven;
+	padding-right: 1em;
+	margin-bottom: 1em;
+}
+
+#footerGithub a {
+	opacity: 0.85;
+	text-decoration: none;
+}
+
+#footerGithub a:hover {
+	opacity: 1;
 }

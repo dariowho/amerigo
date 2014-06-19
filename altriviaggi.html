@@ -1,1 +1,102 @@
-Foto di altri viaggi...
+<html>
+
+<head>
+
+ <meta charset="UTF-8">
+
+ <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+
+ <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+ <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+ 
+ <link rel="stylesheet" type="text/css" href="stile.css">
+
+ <title>Foto di altri viaggi - Hello, World!</title>
+
+</head>
+
+<body>
+	
+<div id="map" style="width:100%;height:100%"> </div>
+<script>
+var map = L.map('map', {attributionControl: false}).setView([45.314071591859516, 15], 4);
+
+// Mapquest
+var tl = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg', {
+	attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+	subdomains: '1234'
+});
+
+L.control.attribution({position: 'topright'}).addTo(map);
+
+tl.addTo(map);
+
+</script>
+
+
+
+<!-- (IT) Carica le foto dall'album Picasa -->
+<!-- (EN) Load pictures from Picasa album -->
+<script>
+var marker;
+$.get('picasa/getrss.php?albumid=6022687094812516161', function (data) {
+    $(data).find("item").each(function () {
+        var el = $(this);
+        
+        // Only if picture has no geo data
+		if ( el.find("gml\\:pos").length != 0 ) {
+			// Album data from feed
+			var imageurl    = el.find("enclosure").attr('url');
+			var markerurl   = imageurl.replace(/([^\/]+$)/g, "s40/TEST$1");
+			var markerlink  = imageurl.replace(/([^\/]+$)/g, "s0/TEST$1");
+			var polaroidurl = "polaroid/polaroid.php?key=2394872&url="+markerurl;
+			var latLng      = el.find("gml\\:pos").text().split(" ");
+
+			// The Marker
+			var icon = L.icon({
+				iconUrl: polaroidurl,
+				iconAnchor:  [20, 20] // TODO: this is not the exact center (default would be top-left corner)
+			});
+			var marker = L.marker([latLng[0],latLng[1]], {icon: icon}).addTo(map);
+			
+			// The Infobox
+			var divNode = document.createElement('DIV');
+			divNode.innerHTML = '<a href="'+markerlink+'" target="_blank"><img src="'+imageurl+'" border="0"></a>';
+			marker.bindPopup(divNode, {
+				maxWidth:600,
+				minWidth:100 });
+		}
+
+    });
+    
+    $("#loadingText").text("Fatto!"); $("#loading").fadeOut(2000);
+});
+</script>
+
+
+
+<div id="tag" style="z-index:2;">
+	
+		<div style="position:absolute; top:0; color:white; font-size: 14px; width:250px; text-align:center;" id="loading">
+			<div id="loadingText">Sto caricando le foto...</div>
+			<img src="ajax-loader.gif" style="vertical-align: middle;">
+		</div>
+	
+		<a href="index.html"><img src="post/aspetto/logo.png" id="logo"></a>
+		<p id="titolo">Hello, World!</p>
+</div>
+
+
+<div id="footer">
+  
+  <div id="footerMenu">
+	<a href="index.html">Pagina Principale</a> - <a href="about.html">About</a> - <a href="postlist.php">Tutti i post</a> - Foto di altri viaggi</div>
+
+<div id="footerGithub">
+	<a href="https://github.com/dario-chiappetta/amerigo" target="_blank"><img src="github-icon.png" style="height: 40px;"><br>All of this is Open Source: get the code on GitHub!</a>
+	</div>
+</div>
+
+</body>
+
+</html>
